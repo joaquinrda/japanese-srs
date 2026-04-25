@@ -32,4 +32,9 @@ public class FlashcardService {
     public List<Flashcard> getAllFlashcards() {
         return flashcardRepository.findAll();
     }
+
+    @Transactional
+    public void deleteFlashcard(Long id) {
+        flashcardRepository.deleteById(id);
+    }
 }

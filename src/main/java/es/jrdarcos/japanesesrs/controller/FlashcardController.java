@@ -27,4 +27,10 @@ public class FlashcardController {
     public ResponseEntity<List<Flashcard>> getAll() {
         return ResponseEntity.ok(flashcardService.getAllFlashcards());
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        flashcardService.deleteFlashcard(id);
+        return ResponseEntity.noContent().build();
+    }
 }
