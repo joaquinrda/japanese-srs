@@ -8,6 +8,7 @@ class JapaneseSrsApplicationTests {
 
 	@Test
 	void contextLoads() {
+
 	}
 
 }
