@@ -37,4 +37,44 @@ public class FlashcardService {
     public void deleteFlashcard(Long id) {
         flashcardRepository.deleteById(id);
     }
+
+    @Transactional
+    public Flashcard reviewFlashcard(Long id, int quality) {
+        Flashcard flashcard = flashcardRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Flashcard not found"));
+
+        int repetition = flashcard.getRepetition();
+        double easiness = flashcard.getEasiness();
+        int interval = flashcard.getIntervalDays();
+
+        // SM-2 algorithm
+        if (quality >= 3) {
+
+            if (repetition == 0)
+                interval = 1;
+            else if (repetition == 1)
+                interval = 6;
+            else
+                interval = (int) Math.round(interval * easiness);
+
+            repetition++;
+        } else {
+            repetition = 0;
+            interval = 1;
+        }
+
+        easiness = easiness + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
+
+        if (easiness < 1.3)
+            easiness = 1.3;
+
+
+        flashcard.setRepetition(repetition);
+        flashcard.setEasiness(easiness);
+        flashcard.setIntervalDays(interval);
+
+        flashcard.setNextReview(LocalDate.now().plusDays(interval));
+
+        return flashcardRepository.save(flashcard);
+    }
 }

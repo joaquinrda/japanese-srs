@@ -3,6 +3,8 @@ package es.jrdarcos.japanesesrs.controller;
 import es.jrdarcos.japanesesrs.entity.Flashcard;
 import es.jrdarcos.japanesesrs.service.FlashcardService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,5 +36,13 @@ public class FlashcardController {
     public ResponseEntity<Void> delete(@NotNull @PathVariable Long id) {
         flashcardService.deleteFlashcard(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/review")
+    public ResponseEntity<Flashcard> review(
+            @NotNull @PathVariable Long id,
+            @NotNull @Min(0) @Max(5) @RequestParam int quality) {
+
+        return ResponseEntity.ok(flashcardService.reviewFlashcard(id, quality));
     }
 }
