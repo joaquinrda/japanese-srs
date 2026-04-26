@@ -33,6 +33,10 @@ public class FlashcardService {
         return flashcardRepository.findAll();
     }
 
+    public List<Flashcard> getDueFlashCards() {
+        return flashcardRepository.findByNextReviewLessThanEqual(LocalDate.now());
+    }
+
     @Transactional
     public void deleteFlashcard(Long id) {
         flashcardRepository.deleteById(id);

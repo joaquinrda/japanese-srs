@@ -32,6 +32,11 @@ public class FlashcardController {
         return ResponseEntity.ok(flashcardService.getAllFlashcards());
     }
 
+    @GetMapping("/due")
+    public ResponseEntity<List<Flashcard>> getDue() {
+        return ResponseEntity.ok(flashcardService.getDueFlashCards());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@NotNull @PathVariable Long id) {
         flashcardService.deleteFlashcard(id);
