@@ -2,6 +2,8 @@ package es.jrdarcos.japanesesrs.controller;
 
 import es.jrdarcos.japanesesrs.entity.Flashcard;
 import es.jrdarcos.japanesesrs.service.FlashcardService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +21,7 @@ public class FlashcardController {
     }
 
     @PostMapping
-    public ResponseEntity<Flashcard> create(@RequestBody Flashcard flashcard) {
+    public ResponseEntity<Flashcard> create(@Valid @RequestBody Flashcard flashcard) {
         return ResponseEntity.ok(flashcardService.createFlashcard(flashcard));
     }
 
@@ -29,7 +31,7 @@ public class FlashcardController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@NotNull @PathVariable Long id) {
         flashcardService.deleteFlashcard(id);
         return ResponseEntity.noContent().build();
     }
