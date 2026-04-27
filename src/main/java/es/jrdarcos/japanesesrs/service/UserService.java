@@ -18,8 +18,11 @@ public class UserService {
     }
 
     @Transactional
-    public void createUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+    public User createUser(String username, String password) {
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(password));
+
+        return userRepository.save(user);
     }
 }
