@@ -17,6 +17,11 @@ public class Flashcard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    @JoinColumn(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private User user;
+
     @NotBlank
     @Column(nullable = false)
     private String kanji; // Carácter (ej. 猫)
