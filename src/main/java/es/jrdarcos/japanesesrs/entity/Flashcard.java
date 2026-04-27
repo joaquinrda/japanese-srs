@@ -1,5 +1,6 @@
 package es.jrdarcos.japanesesrs.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -7,8 +8,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "flashcards", indexes = {
-        @Index(name = "idx_flashcards_user_id", columnList = "user_id"),
-        @Index(name = "unq_flashcards_kanji", columnList = "kanji",  unique = true)
+        @Index(name = "unq_flashcards_user_kanji", columnList = "user_id, kanji",  unique = true)
 })
 @Data
 @NoArgsConstructor
@@ -20,9 +20,9 @@ public class Flashcard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @JsonIgnore
     @JoinColumn(nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     private User user;
 
     @NotBlank

@@ -2,6 +2,7 @@ package es.jrdarcos.japanesesrs.service;
 
 
 import es.jrdarcos.japanesesrs.entity.Flashcard;
+import es.jrdarcos.japanesesrs.entity.User;
 import es.jrdarcos.japanesesrs.repository.FlashcardRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,22 +20,23 @@ public class FlashcardService {
     }
 
     @Transactional
-    public Flashcard createFlashcard(Flashcard flashcard) {
+    public Flashcard createFlashcard(Flashcard flashcard, User user) {
         flashcard.setNextReview(LocalDate.now());
         flashcard.setEasiness(2.5);
         flashcard.setRepetition(0);
         flashcard.setIntervalDays(0);
+        flashcard.setUser(user);
 
         return flashcardRepository.save(flashcard);
     }
 
     @Transactional(readOnly = true)
-    public List<Flashcard> getAllFlashcards() {
-        return flashcardRepository.findAll();
+    public List<Flashcard> getAllFlashcards(User user) {
+        return flashcardRepository.findByUser(user);
     }
 
-    public List<Flashcard> getDueFlashCards() {
-        return flashcardRepository.findByNextReviewLessThanEqual(LocalDate.now());
+    public List<Flashcard> getDueFlashCards(User user) {
+        return flashcardRepository.findByUserAndNextReviewLessThanEqual(user, LocalDate.now());
     }
 
     @Transactional

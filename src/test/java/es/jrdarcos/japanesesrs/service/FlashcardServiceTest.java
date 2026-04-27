@@ -33,7 +33,7 @@ class FlashcardServiceTest {
 
         when(repository.save(any(Flashcard.class))).thenAnswer(i -> i.getArguments()[0]);
 
-        Flashcard cardSaved = service.createFlashcard(cardIn);
+        Flashcard cardSaved = service.createFlashcard(cardIn, null);
 
         assertThat(cardSaved.getNextReview()).isEqualTo(LocalDate.now());
         assertThat(cardSaved.getEasiness()).isEqualTo(2.5);

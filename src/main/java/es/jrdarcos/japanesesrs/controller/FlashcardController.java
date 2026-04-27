@@ -1,12 +1,14 @@
 package es.jrdarcos.japanesesrs.controller;
 
 import es.jrdarcos.japanesesrs.entity.Flashcard;
+import es.jrdarcos.japanesesrs.entity.User;
 import es.jrdarcos.japanesesrs.service.FlashcardService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,17 +26,21 @@ public class FlashcardController {
 
     @PostMapping
     public ResponseEntity<Flashcard> create(@Valid @RequestBody Flashcard flashcard) {
-        return ResponseEntity.ok(flashcardService.createFlashcard(flashcard));
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return ResponseEntity.ok(flashcardService.createFlashcard(flashcard, user));
     }
 
     @GetMapping
     public ResponseEntity<List<Flashcard>> getAll() {
-        return ResponseEntity.ok(flashcardService.getAllFlashcards());
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok(flashcardService.getAllFlashcards(user));
     }
 
     @GetMapping("/due")
     public ResponseEntity<List<Flashcard>> getDue() {
-        return ResponseEntity.ok(flashcardService.getDueFlashCards());
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok(flashcardService.getDueFlashCards(user));
     }
 
     @DeleteMapping("/{id}")
